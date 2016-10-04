@@ -11,14 +11,21 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onCommand:extension.sayHello",
+        "onCommand:extension.content"
     ],
     "main": "./out/src/extension",
     "contributes": {
-        "commands": [{
-            "command": "extension.sayHello",
-            "title": "Hello World"
-        }]
+        "commands": [
+            {
+                "command": "extension.sayHello",
+                "title": "Hello World"
+            }, 
+            {
+                "command": "extension.content",
+                "title": "Show Content"
+            }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",

@@ -20,8 +20,19 @@ export function activate(context: vscode.ExtensionContext) {
         // Display a message box to the user
         vscode.window.showInformationMessage('Hello World!');
     });
+    
+    let content = vscode.commands.registerCommand("extension.content", () => {
+        let editor = vscode.window.activeTextEditor;
+        if(!editor) {
+            return;
+        }
+        let content = editor.document.getText();
+        vscode.window.showInformationMessage(content);
+    });
 
     context.subscriptions.push(disposable);
+    context.subscriptions.push(content);
+    
 }
 
 // this method is called when your extension is deactivated
