@@ -3,6 +3,12 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+import { Github, GithubSettings } from "./github";
+
+let settings = new GithubSettings();
+settings.user = process.env["ghu"];
+settings.password = process.env["ghp"];
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -21,13 +27,17 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage('Hello World!');
     });
     
-    let content = vscode.commands.registerCommand("extension.content", () => {
+    let content = vscode.commands.registerCommand("extension.githubDetailComment", () => {
         let editor = vscode.window.activeTextEditor;
         if(!editor) {
             return;
         }
+
         let content = editor.document.getText();
-        vscode.window.showInformationMessage(content);
+        //vscode.window.showInformationMessage(content);
+        
+        let github = new Github(settings);
+        github.createComment(content);
     });
 
     context.subscriptions.push(disposable);
