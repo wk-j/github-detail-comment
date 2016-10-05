@@ -1,7 +1,11 @@
 {
   "name": "github-detial-comment",
-  "displayName": "github-detial-comment",
-  "description": "",
+  "displayName": "Github detail comment",
+  "description": "Create github comment from Visual Studio Code",
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/wk-j/github-detail-comment"
+   },
   "version": "0.0.1",
   "publisher": "wk-j",
   "engines": {
@@ -11,19 +15,14 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.sayHello",
     "onCommand:extension.githubDetailComment"
   ],
   "main": "./out/src/extension",
   "contributes": {
     "commands": [
       {
-        "command": "extension.sayHello",
-        "title": "Hello World"
-      },
-      {
         "command": "extension.githubDetailComment",
-        "title": "Add Comment"
+        "title": "Create Gitub Comment"
       }
     ]
   },

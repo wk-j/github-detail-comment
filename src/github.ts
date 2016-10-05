@@ -5,6 +5,14 @@ export class GithubSettings {
     password: string;
 }
 
+export class Comment {
+    constructor(
+        public owner:string, 
+        public repository:string, 
+        public issue: number,
+        public body: string) {}
+}
+
 export class Github {
     client: any;
     
@@ -16,15 +24,18 @@ export class Github {
         this.client = client;
     }
     
-    createComment(content) {
-        var issue = this.client.issue("wk-j/github-detail-comment",1);
-        var comment = {
-            body: content
+    createComment(comment: Comment, callback : (success, data) => void) {
+        let path = `${comment.owner}/${comment.repository}`;
+        var issue = this.client.issue(path, comment.issue);
+        var info = {
+            body: comment.body
         }
-        issue.createComment(comment, (err, data, headers) => {
-            console.log(err);
-            console.log(data);
-            console.log(headers);
+        issue.createComment(info, (err, data, headers) => {
+            if(!err) {
+                callback(true, "Create comment success.");
+            }else {
+                callback(false, err);
+            }
         });
     }
 }
