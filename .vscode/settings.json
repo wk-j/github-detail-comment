@@ -1,11 +1,12 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "files.exclude": {
+        "./**/*.js.map": true,
         "*.log": true,
         "node_modules": true,
         "build.ps1": true,
         "build.cmd": true,
-        "out": false // set this to true to hide the "out" folder with the compiled JS files
+        "out": true
     },
     "search.exclude": {
         "out": true // set this to false to include "out" folder in search results

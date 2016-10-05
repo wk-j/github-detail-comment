@@ -1,4 +1,4 @@
-## Github Detail Comment
+## Github detail comment
 
 Create issue comment from Visual Studio Code.
 
@@ -9,7 +9,7 @@ You must provide following environment variables
 - `ghu` : Github user name
 - `ghp` : Github password / token
 
-## Intall
+## Install
 
 > ext install github-detial-comment
 
