@@ -1,3 +1,6 @@
 out
 node_modules
 *.log
+tools
+build.cmd
+build.ps1

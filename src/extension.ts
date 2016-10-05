@@ -47,7 +47,10 @@ export function activate(context: vscode.ExtensionContext) {
 function createComment(issuePath:string, content) {
     let github = new Github(settings);
     let token = issuePath.split("/");
-    if (token.length != 7) return;
+    if (token.length != 7) {
+        vscode.window.showErrorMessage("Invalid issue url");
+        return;
+    }
     
     let owner = token[3];
     let repo = token[4];

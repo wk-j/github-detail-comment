@@ -1,12 +1,12 @@
 {
   "name": "github-detial-comment",
   "displayName": "Github detail comment",
-  "description": "Create github comment from Visual Studio Code",
+  "description": "Create issue comment from Visual Studio Code",
    "repository": {
       "type": "git",
       "url": "https://github.com/wk-j/github-detail-comment"
    },
-  "version": "0.0.1",
+  "version": "0.0.3",
   "publisher": "wk-j",
   "engines": {
     "vscode": "^1.5.0"
@@ -18,15 +18,17 @@
     "onCommand:extension.githubDetailComment"
   ],
   "main": "./out/src/extension",
+  "icon": "images/icon.png",
   "contributes": {
     "commands": [
       {
         "command": "extension.githubDetailComment",
-        "title": "Create Gitub Comment"
+        "title": "Create github comment"
       }
     ]
   },
   "scripts": {
+    "publish": "vsce publish",
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install"

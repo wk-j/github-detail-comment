@@ -2,7 +2,9 @@
 {
     "files.exclude": {
         "*.log": true,
-        "node_modules": false,
+        "node_modules": true,
+        "build.ps1": true,
+        "build.cmd": true,
         "out": false // set this to true to hide the "out" folder with the compiled JS files
     },
     "search.exclude": {

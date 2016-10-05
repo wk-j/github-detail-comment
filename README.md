@@ -4,14 +4,18 @@ Create issue comment from Visual Studio Code.
 
 ## Requirement
 
-Please provide following environment variables
+You must provide following environment variables
 
 - `ghu` : Github user name
 - `ghp` : Github password / token
 
+## Intall
+
+> ext install github-detial-comment
+
 ## Usage
 
-- `Command + Shift + p`
-- Type `Create Github Comment`
+- `Command + Shift + P`
+- Type `Create github comment`
 - Paste full issue path
-- Extension will copy all text in current editor add post as comment.
+- Extension will copy text in current editor and post as issue comment.
