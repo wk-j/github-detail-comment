@@ -1,5 +1,8 @@
 import * as vscode from "vscode";
+
 var octonode = require("octonode");
+var getUrls = require("get-urls") as (string) => string[];
+var endOfLine = require('os').EOL;
 
 let callback: (err, data, headers) => void;
 
@@ -16,6 +19,22 @@ export class GhUtility {
         var repo = token[4];
         var issue = token[6];
         return [owner, repo, parseInt(issue)];
+    }
+    
+    static findGithubUrls(text: string): string[] {
+        var urls = getUrls(text).filter(x => x.startsWith("https://github.com"));
+        return urls;
+    }
+    
+    static findTitle(text: string) : string {
+       let lines = text.split(endOfLine).filter(x => x.startsWith("|||") && x.indexOf("https://github.com") == -1);
+       let title = lines.length > 0 ? lines[0] : "New issue";
+       return title.replace("|||", "").trim();
+    }
+    
+    static cleanText(text: string) : string {
+        let lines = text.split(endOfLine).filter(x => !x.startsWith("|||"));
+        return lines.join(endOfLine);
     }
 }
 
@@ -45,7 +64,7 @@ class GhFactory {
         return this.client.repo(`${owner}/${repository}`) as GhRepo
     }
     
-    createIssue(owner, repository, issue) {
+    createIssue(owner, repository, issue) : any {
         return this.client.issue(`${owner}/${repository}`, issue) as GhIssue
     }
 }
@@ -70,7 +89,7 @@ export class Github {
     }
     
     createComment(owner, repo, issueId, body: string, callback : (success, data) => void) {
-        var issue = this.factory.createIssue(owner, repo, issue);
+        var issue = this.factory.createIssue(owner, repo, issueId);
         issue.createComment({
             body: body
         }, (err, data, headers) => {

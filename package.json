@@ -2,11 +2,11 @@
   "name": "github-detial-comment",
   "displayName": "Github Detail Comment",
   "description": "Create github issue and comment in Visual Studio Code",
-   "repository": {
-      "type": "git",
-      "url": "https://github.com/wk-j/github-detail-comment"
-   },
-  "version": "0.0.4",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wk-j/github-detail-comment"
+  },
+  "version": "0.0.5",
   "publisher": "wk-j",
   "engines": {
     "vscode": "^1.5.0"
@@ -24,11 +24,11 @@
     "commands": [
       {
         "command": "extension.createIssue",
-        "title": "Github: Create Issue"
+        "title": "Github: Create issue"
       },
       {
         "command": "extension.createIssueComment",
-        "title": "Github: Github Issue Comment"
+        "title": "Github: Create issue comment"
       }
     ]
   },
@@ -46,6 +46,7 @@
     "@types/mocha": "^2.2.32"
   },
   "dependencies": {
+    "get-urls": "^5.0.1",
     "octonode": "^0.7.6"
   }
 }

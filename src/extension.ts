@@ -9,23 +9,42 @@ export function activate(context: vscode.ExtensionContext) {
 
     let user = process.env["ghu"];
     let password = process.env["ghp"];
+    
+    if(!user) { 
+        vscode.window.showErrorMessage("Not found key 'ghu' in enviroment variables");
+        return;
+    }
+    
+    if(!password) {
+        vscode.window.showErrorMessage("Not found key 'ghu' in enviroment variables");
+        return;
+    }
+
     let github = new Github(user, password);
     
     let getText = () => {
         var editor = vscode.window.activeTextEditor;
         if(!editor) return "";
         return editor.document.getText();
-    };
+    }
 
     vscode.commands.registerCommand("extension.createIssue", () => {
-        var input = vscode.window.showInputBox({ prompt: "Full repository url"});
+        let content = getText();
+        var urls = GhUtility.findGithubUrls(content);
+        var input = vscode.window.showInputBox({ 
+            prompt: "Full repository url", 
+            value: urls.length > 0 ? urls[0] : "" ,
+            validateInput: (x) => x.startsWith("https://github.com") ? "" : "Invalid repository url"
+        });
+
         input.then((url) => {
-            let content = getText();
             if(!content || !url) {
                 vscode.window.showErrorMessage("Please write issue in text editor");
             }else {
                 let [owner, repo] = GhUtility.extractRepoUrl(url);
-                github.createIssue(owner, repo, "Test Title", content, (ok, data) => {
+                let title = GhUtility.findTitle(content);
+                let clean = GhUtility.cleanText(content);
+                github.createIssue(owner, repo, title, clean, (ok, data) => {
                     if(ok) vscode.window.showInformationMessage(data);
                     else vscode.window.showErrorMessage(data);
                 });
@@ -34,14 +53,20 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     vscode.commands.registerCommand("extension.createIssueComment", () => {
-        var input = vscode.window.showInputBox({prompt: 'Full issue url'})
+        let content = getText(); 
+        var urls = GhUtility.findGithubUrls(content);
+        var input = vscode.window.showInputBox({
+            prompt: 'Full issue url', 
+            value: urls.length > 0 ? urls[0] : "" ,
+            validateInput: (x) => x.startsWith("https://github.com") ? "" : "Invalid issue url"
+        });
         input.then((url) => {
-            let content = getText(); 
             if(!content || !url) {
                 vscode.window.showErrorMessage("Please write comment in text editor");
             }else {
-                let [owner, repo, issue] = GhUtility.extractIssueUrl(url)
-                github.createComment(owner, repo, issue, content, (ok, data) => {
+                let [owner, repo, issue] = GhUtility.extractIssueUrl(url);
+                let clean = GhUtility.cleanText(content);
+                github.createComment(owner, repo, issue, clean, (ok, data) => {
                     if(ok) vscode.window.showInformationMessage(data);
                     else vscode.window.showErrorMessage(data);
                 });
