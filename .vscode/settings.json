@@ -6,6 +6,7 @@
         "node_modules": true,
         "build.ps1": true,
         "build.cmd": true,
+        "tools": true,
         "out": true
     },
     "search.exclude": {

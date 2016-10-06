@@ -1,9 +1,11 @@
 #addin "nuget:?package=Cake.SquareLogo"
 
-Task("Logo").Does(() =>{
+Task("Icon").Does(() =>{
     CreateLogo("Github", "images/icon.png", new LogoSettings {
-        Background = "DarkSlateBlue",
-        Foreground = "White"
+        Background = "Green",
+        Foreground = "White",
+        FontFamily = "Optima",
+        Padding = 50
     });
 });
 
