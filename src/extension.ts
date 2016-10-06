@@ -1,76 +1,52 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { Github, GithubSettings, Comment } from "./github";
-
-let settings = new GithubSettings();
-settings.user = process.env["ghu"];
-settings.password = process.env["ghp"];
-
-let issues = [];
+import { Github, GhUtility } from "./github";
 
 export function activate(context: vscode.ExtensionContext) {
 
     console.log('Congratulations, your extension "github-detial-comment" is now active!');
 
-    let content = vscode.commands.registerCommand("extension.githubDetailComment", () => {
+    let user = process.env["ghu"];
+    let password = process.env["ghp"];
+    let github = new Github(user, password);
+    
+    let getText = () => {
+        var editor = vscode.window.activeTextEditor;
+        if(!editor) return "";
+        return editor.document.getText();
+    };
 
-        let editor = vscode.window.activeTextEditor;
-        
-        if(!settings.user) {
-            vscode.window.showErrorMessage("Not found environment variable 'ghu' (github user name)");
-            return;
-        }
-        
-        if(!settings.password) {
-            vscode.window.showErrorMessage("Not found enviroment variable 'ghp' (github password/token)");
-            return;
-        }
-
-        if(!editor) return;
-
-        //let quickPick = vscode.window.showQuickPick(issues, { matchOnDescription: true, placeHolder: "Full issue url" });
-        var input = vscode.window.showInputBox({prompt: 'Full issue url'})
-        input.then((value) => {
-            let content = editor.document.getText();
-            if(!content || !value) {
-                vscode.window.showInputBox()
-                vscode.window.showErrorMessage("Please write comment in text editor");
+    vscode.commands.registerCommand("extension.createIssue", () => {
+        var input = vscode.window.showInputBox({ prompt: "Full repository url"});
+        input.then((url) => {
+            let content = getText();
+            if(!content || !url) {
+                vscode.window.showErrorMessage("Please write issue in text editor");
             }else {
-                createComment(value, content);
+                let [owner, repo] = GhUtility.extractRepoUrl(url);
+                github.createIssue(owner, repo, "Test Title", content, (ok, data) => {
+                    if(ok) vscode.window.showInformationMessage(data);
+                    else vscode.window.showErrorMessage(data);
+                });
             }
         });
     });
-    context.subscriptions.push(content);
-}
 
-function createComment(issuePath:string, content) {
-    let github = new Github(settings);
-    let token = issuePath.split("/");
-    if (token.length != 7) {
-        vscode.window.showErrorMessage("Invalid issue url");
-        return;
-    }
-    
-    let owner = token[3];
-    let repo = token[4];
-    let issue = parseInt(token[6]);
-    let comment = new Comment(owner, repo,issue, content);
-    
-    if(!issues.find(x => x.label == issuePath)) {
-        var item = {
-            label: issuePath,
-            description: issuePath
-        }
-        issues.push(item);
-    }
-
-    github.createComment(comment, (success, data) => {
-        if(success) {
-            vscode.window.showInformationMessage(data);
-        }else {
-            vscode.window.showErrorMessage(data);
-        }
+    vscode.commands.registerCommand("extension.createIssueComment", () => {
+        var input = vscode.window.showInputBox({prompt: 'Full issue url'})
+        input.then((url) => {
+            let content = getText(); 
+            if(!content || !url) {
+                vscode.window.showErrorMessage("Please write comment in text editor");
+            }else {
+                let [owner, repo, issue] = GhUtility.extractIssueUrl(url)
+                github.createComment(owner, repo, issue, content, (ok, data) => {
+                    if(ok) vscode.window.showInformationMessage(data);
+                    else vscode.window.showErrorMessage(data);
+                });
+            }
+        });
     });
 }
 

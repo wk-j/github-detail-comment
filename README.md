@@ -1,6 +1,6 @@
-## Github detail comment
+## Github Detail Comment
 
-Create issue comment from Visual Studio Code.
+Create github issue and comment from VS Code.
 
 ## Requirement
 
@@ -15,7 +15,16 @@ You must provide following environment variables
 
 ## Usage
 
+### Create issue
+
+- Write issue in VS Code editor.
+- `Command + Shift + P`
+- Type `Create Github Issue`
+- Paste repository url, press `Enter`
+
+### Create comment
+
+- Write comment in VS Code editor.
 - `Command + Shift + P`
 - Type `Create Github Comment`
 - Paste full issue url, press `Enter`
-- Extension will copy text in current editor and post as issue comment.
