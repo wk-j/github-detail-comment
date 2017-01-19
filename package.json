@@ -50,6 +50,7 @@
   },
   "dependencies": {
     "get-urls": "^5.0.1",
-    "octonode": "^0.7.6"
+    "octonode": "^0.7.6",
+    "simple-git": "^1.65.0"
   }
 }
