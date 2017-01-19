@@ -4,3 +4,5 @@ node_modules
 tools
 build.cmd
 build.ps1
+*.mp4
+*.gif

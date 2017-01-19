@@ -3,10 +3,26 @@ import * as vscode from "vscode";
 var octonode = require("octonode");
 var getUrls = require("get-urls") as (string) => string[];
 var endOfLine = require('os').EOL;
+var git = require("simple-git");
 
 let callback: (err, data, headers) => void;
 
 export class GhUtility {
+
+    static getRepostories() {
+        var dir = vscode.workspace.rootPath;
+        var repo = git(dir);
+
+        var promise = new Promise((resolve, reject) => {
+            repo.getRemotes(true, (err, result) => {
+                var urls = result.map(k => k.refs).map(k => k.fetch).map(k => k.replace(".git", ""));
+                resolve(urls);
+            });
+        });
+
+        return promise;
+    }
+
     static extractRepoUrl(url: string): [string, string] {
         var token = url.split("/");
         var owner = token[3];
