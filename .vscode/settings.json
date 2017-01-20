@@ -1,5 +1,6 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+    "git.path": "/usr/bin/git",
     "files.exclude": {
         "./**/*.js.map": true,
         "*.log": true,

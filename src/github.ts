@@ -13,6 +13,11 @@ export class GhUtility {
         var dir = vscode.workspace.rootPath;
         var repo = git(dir);
 
+        var vsgit = vscode.workspace.getConfiguration("git").get("path");
+        if(vsgit){
+            repo.customBinary(vsgit);
+        }
+
         var promise = new Promise((resolve, reject) => {
             repo.getRemotes(true, (err, result) => {
                 var urls = result.map(k => k.refs).map(k => k.fetch).map(k => k.replace(".git", ""));
@@ -84,7 +89,6 @@ class GhFactory {
         return this.client.issue(`${owner}/${repository}`, issue) as GhIssue
     }
 }
-
 export class Github {
     
     factory: GhFactory;
